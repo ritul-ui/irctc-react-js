@@ -8,6 +8,7 @@ import RegisterModal from "../pages/RegisterModal";
 import {
   openLoginModal,
   openRegisterModal,
+  logoutAsync,
   closeModals
 } from "../redux/auth/authSlice";
 
@@ -73,7 +74,7 @@ const Navbar = () => {
                 className={styles.authButton}
                 onClick={
                   // TODO: call method to logout
-                  ()=>{}
+                  () => dispatch(logoutAsync())
                 }
               >
                 LOGOUT

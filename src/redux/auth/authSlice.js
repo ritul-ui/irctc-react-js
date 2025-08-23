@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginWithGoogle } from "../../services/authServices";
+import {
+  loginWithGoogle,
+  registerWithEmail,
+  loginWithEmail,
+} from "../../services/authServices";
 
 export const loginWithGoogleAsync = createAsyncThunk(
   "auth/loginWithGoogle",
@@ -13,14 +17,40 @@ export const loginWithGoogleAsync = createAsyncThunk(
   }
 );
 
-const loginWithEmailAsync = createAsyncThunk(
-  "auth/loginWithEmail",
-  async (credentials, thunkAPI) => {
-    const response = await loginWithEmail(credentials);
+export const registerWithEmailAsync = createAsyncThunk(
+  "auth/registerWithEmail",
+  async ({ fullName, email, password }, thunkAPI) => {
+    const response = await registerWithEmail({ fullName, email, password });
+    console.log("response from registerWithEmailAsync:", response);
     if (response.status === 200) {
       return response.user;
     } else {
       return thunkAPI.rejectWithValue(response.error);
+    }
+  }
+);
+
+export const loginWithEmailAsync = createAsyncThunk(
+  "auth/loginWithEmail",
+  async ({ email, password }, thunkAPI) => {
+    const response = await loginWithEmail(email, password);
+    console.log("response from loginWithEmailAsync:", response);
+    if (response.status === 200) {
+      return response.user;
+    } else {
+      return thunkAPI.rejectWithValue(response.error);
+    }
+  }
+);
+
+export const logoutAsync = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      await logout();
+      return null;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -119,6 +149,29 @@ const authSlice = createSlice({
           state.error = action.payload;
         })
 
+        .addCase(registerWithEmailAsync.pending, (state) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(registerWithEmailAsync.fulfilled, (state, action) => {
+          state.isLoggedIn = true;
+          state.isLoginOpen = false;
+          state.isRegisterOpen = false;
+          state.user = action.payload;
+          state.loading = false;
+          state.error = null;
+          state.isLoginOpen = false;
+        })
+        .addCase(registerWithEmailAsync.rejected, (state, action) => {
+          state.isLoggedIn = false;
+          state.isLoginOpen = false;
+          state.isRegisterOpen = false;
+          state.user = null;
+          state.isLoginOpen = false;
+          state.loading = false;
+          state.error = action.payload;
+        })
+
         .addCase(loginWithEmailAsync.pending, (state) => {
           state.loading = true;
           state.error = null;
@@ -138,6 +191,22 @@ const authSlice = createSlice({
           state.isRegisterOpen = false;
           state.user = null;
           state.isLoginOpen = false;
+          state.loading = false;
+          state.error = action.payload;
+        })
+
+        .addCase(logoutAsync.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(logoutAsync.fulfilled, (state) => {
+          state.isLoggedIn = false;
+          state.user = null;
+          state.loading = false;
+          state.isLoginOpen = false;
+          state.isRegisterOpen = false;
+          state.error = null;
+        })
+        .addCase(logoutAsync.rejected, (state, action) => {
           state.loading = false;
           state.error = action.payload;
         });

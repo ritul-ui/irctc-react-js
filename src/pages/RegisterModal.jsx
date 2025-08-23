@@ -4,6 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import styles from "../styles/AuthModal.module.css";
 import {
   clearError,
+  registerWithEmailAsync
 } from "../redux/auth/authSlice";
 
 const RegisterModal = ({ isOpen, onClose, switchToLogin }) => {
@@ -19,7 +20,9 @@ const RegisterModal = ({ isOpen, onClose, switchToLogin }) => {
     e.preventDefault();
     dispatch(clearError());
 
-    // TODO: 
+    // TODO:
+    console.log("register");
+    dispatch(registerWithEmailAsync({ fullName, email, password }));
   };
 
   const handleGoogleRegister = async () => {

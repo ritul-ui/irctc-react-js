@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import {
   clearError,
   loginWithGoogleAsync,
+  loginWithEmailAsync
 } from "../redux/auth/authSlice";
 
 const LoginModal = ({ isOpen, onClose, switchToRegister, onLogin }) => {
@@ -18,8 +19,10 @@ const LoginModal = ({ isOpen, onClose, switchToRegister, onLogin }) => {
   const handleEmailLogin = async (e) => {
     e.preventDefault();
     dispatch(clearError());
+   console.log("login");
 
     // TODO: call method to login
+   dispatch(loginWithEmailAsync({ email, password }));
   };
 
   const handleGoogleLogin = async () => {
