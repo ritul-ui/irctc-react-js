@@ -30,6 +30,7 @@ const LoginModal = ({ isOpen, onClose, switchToRegister, onLogin }) => {
 
     // TODO: call method to google login
     dispatch(loginWithGoogleAsync());
+    navigate("/");
   };
 
   return (

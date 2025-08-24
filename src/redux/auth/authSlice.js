@@ -3,6 +3,7 @@ import {
   loginWithGoogle,
   registerWithEmail,
   loginWithEmail,
+  logout,
 } from "../../services/authServices";
 
 export const loginWithGoogleAsync = createAsyncThunk(
@@ -47,6 +48,7 @@ export const logoutAsync = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
+      console.log("Logging out...");
       await logout();
       return null;
     } catch (error) {
