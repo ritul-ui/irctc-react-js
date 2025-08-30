@@ -2,14 +2,18 @@ import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../styles/TrainSearchResults.module.css";
 import ModifySearch from "../components/ModifySearch";
+import {useSelector, useDispatch} from "react-redux";
+import {applyFilters, setSearchParams} from "../redux/train/trainSlice";
 
 
 const TrainSearchResults = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   // TODO: pull these from redux state
-  const { trains, filteredTrains, searchParams, filters, loading, error } = {};
+  const { trains, filteredTrains, searchParams, filters, loading, error } = useSelector((state) => state.trains);
+  console.log("trains from state", filteredTrains);
 
   // Handler for checkbox changes
   const handleFilterChange = (category, value) => {
@@ -26,13 +30,16 @@ const TrainSearchResults = () => {
       travelClass: query.get("class") || "",
       quota: query.get("quota") || "",
     };
+    console.log("from query", params.from);
+    console.log("travelclass", params.travelClass);
 
     // TODO: set searchParams
+    dispatch(setSearchParams(params))
 
-    // Fetch trains if not already loaded
-    if (trains.length === 0) {
-    //   TODO: fetch trains
-    }
+    // // Fetch trains if not already loaded
+    // if (trains.length === 0) {
+    // //   TODO: fetch trains
+    // }
   }, [location.search, trains.length]);
 
   const handleDetailsClick = (train) => {
@@ -48,6 +55,7 @@ const TrainSearchResults = () => {
   // Apply filters when trains, search params, or filters change
   useEffect(() => {
     //   TODO: apply filters
+    dispatch(applyFilters());
   }, [trains, searchParams, filters, dispatch]);
 
 
