@@ -1,12 +1,19 @@
-# React + Vite
+Redux Toolkit simplifies the process of writing Redux logic and helps manage complex state and async operations in a scalable way.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Store Structure
 
-Currently, two official plugins are available:
+- The Redux store is configured in [`src/redux/store.js`](src/redux/store.js).
+- State slices include:
+  - [`auth`](src/redux/auth/authSlice.js): Handles authentication state and user info.
+  - [`trains`](src/redux/train/trainSlice.js): Manages train search, filters, and selected train details.
+  - [`bookings`](src/redux/bookings/bookingsSlice.js): Manages booking creation and user booking history.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Async Actions
 
-## Expanding the ESLint configuration
+- Async thunks are defined using `createAsyncThunk` for operations like fetching trains, user authentication, and booking creation.
+- Example: [`fetchTrains`](src/redux/train/trainSlice.js) fetches train data from the API.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Usage
+
+- Use `useSelector` to access state and `useDispatch` to dispatch actions in React components.
+- All slices and thunks are organized under the `src/redux/` directory for maintainability.
