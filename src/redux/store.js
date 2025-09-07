@@ -9,6 +9,10 @@ const store = configureStore({
     trains: trainReducer,
     bookings: bookingSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store;

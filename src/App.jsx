@@ -20,6 +20,7 @@ import { setAuthState } from "./redux/auth/authSlice";
 import { observeAuthState } from "./services/authServices";
 import TrainDetails from "./pages/TrainDetails";
 import BookingConfirmation from "./pages/BookingConfirmationPage";
+import MyBookings from "./pages/MyBookings";
 
 // Component to conditionally render content based on route
 const RouteContentManager = () => {
@@ -37,7 +38,7 @@ const RouteContentManager = () => {
         />
         <Route path="/train-search" element={<TrainSearchResults />} />
         <Route path="/train-details/:train_number" element={<TrainDetails />} />
-        <Route path="/booking-confirmation" element={<BookingConfirmation />} />
+        <Route path="/booking-confirmation" element={<BookingConfirmation/>} />
         <Route
           path="/booking"
           element={
@@ -45,6 +46,14 @@ const RouteContentManager = () => {
               <BookingPage />
             </ProtectedRoute>
           }
+        />
+        <Route 
+          path="/my-bookings" 
+          element={
+            <ProtectedRoute>
+              <MyBookings />
+            </ProtectedRoute>
+          } 
         />
         <Route path="/contact" element={<ContactPage />} />
         <Route

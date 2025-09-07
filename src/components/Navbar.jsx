@@ -8,8 +8,8 @@ import RegisterModal from "../pages/RegisterModal";
 import {
   openLoginModal,
   openRegisterModal,
+  closeModals,
   logoutAsync,
-  closeModals
 } from "../redux/auth/authSlice";
 
 const Navbar = () => {
@@ -53,9 +53,14 @@ const Navbar = () => {
 
         {/* Navigation Links */}
         <div className={styles.navLinks}>
-          <span className={styles.navLink} onClick={handleBookingClick}>
+          {isLoggedIn && (
+            <span 
+              className={styles.navLink} 
+              onClick={() => navigate("/my-bookings")}
+            >
             BOOKINGS
-          </span>
+            </span>
+          )}
           <span className={styles.navLink} onClick={() => navigate("/contact")}>
             CONTACT US
           </span>
@@ -72,10 +77,7 @@ const Navbar = () => {
               <span>{user.displayName}</span>
               <button
                 className={styles.authButton}
-                onClick={
-                  // TODO: call method to logout
-                  () => dispatch(logoutAsync())
-                }
+                onClick={() => dispatch(logoutAsync())}
               >
                 LOGOUT
               </button>
